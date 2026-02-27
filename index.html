@@ -372,6 +372,21 @@
         justify-content: center; 
         padding: 20px; 
     }
+    .delivery-notice {
+    background: #fff3cd;
+    color: #856404;
+    padding: 10px 15px;
+    border-radius: 8px;
+    font-size: 12px;
+    margin: 15px 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border: 1px solid #ffeeba;
+}
+.delivery-notice i {
+    font-size: 16px;
+}
 </style>
 </head>
 <body>
@@ -584,7 +599,7 @@
 
             <div class="options-section">PAGAMENTO</div>
             <select id="payment" class="input-box">
-                <option value="Pix na entrega">Pix na entrega</option>
+                <option value="Pix">Pix</option>
                 <option value="Cartão na entrega">Cartão na entrega</option>
                 <option value="Dinheiro">Dinheiro</option>
             </select>
@@ -800,26 +815,34 @@
     }
 
     function openCart() {
-        const list = document.getElementById('cartList');
-        if (cart.length === 0) {
-            list.innerHTML = 'Sua sacola está vazia';
-            list.style.padding = "20px";
-        } else {
-            list.innerHTML = '';
-            list.style.padding = "0";
-            cart.forEach((i, idx) => {
-                list.innerHTML += `
-                <div class="cart-item">
-                    <div style="flex:1; text-align: left;"><b>${i.qty}x ${i.name}</b><br><small style="color:#777">${i.obs}</small></div>
-                    <div style="text-align:right">
-                        <b>R$ ${i.totalPrice.toFixed(2)}</b><br>
-                        <i class="fas fa-trash-alt" style="color:red; cursor:pointer; margin-top:5px;" onclick="removeItem(${idx})"></i>
-                    </div>
-                </div>`;
-            });
-        }
-        document.getElementById('cartModal').style.display = 'block';
+    const list = document.getElementById('cartList');
+    if (cart.length === 0) {
+        list.innerHTML = 'Sua sacola está vazia';
+        list.style.padding = "20px";
+    } else {
+        list.innerHTML = '';
+        list.style.padding = "0";
+        cart.forEach((i, idx) => {
+            list.innerHTML += `
+            <div class="cart-item">
+                <div style="flex:1; text-align: left;"><b>${i.qty}x ${i.name}</b><br><small style="color:#777">${i.obs}</small></div>
+                <div style="text-align:right">
+                    <b>R$ ${i.totalPrice.toFixed(2)}</b><br>
+                    <i class="fas fa-trash-alt" style="color:red; cursor:pointer; margin-top:5px;" onclick="removeItem(${idx})"></i>
+                </div>
+            </div>`;
+        });
+
+        // ADICIONA O AVISO DE LOCALIZAÇÃO APÓS A LISTA DE ITENS
+        list.innerHTML += `
+            <div class="delivery-notice">
+                <i class="fas fa-exclamation-triangle"></i>
+                <span><strong>Atenção:</strong> Após enviar o pedido, envie sua <b>localização fixa</b> no WhatsApp para calcularmos a taxa de entrega.</span>
+            </div>
+        `;
     }
+    document.getElementById('cartModal').style.display = 'block';
+}
 
     function removeItem(idx) { cart.splice(idx, 1); openCart(); updateCartUI(); }
     function closeModal(id) { document.getElementById(id).style.display = 'none'; }
